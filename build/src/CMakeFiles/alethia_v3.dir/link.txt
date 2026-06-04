@@ -1,0 +1,2 @@
+/usr/bin/ar qc libalethia_v3.a CMakeFiles/alethia_v3.dir/initv3.cpp.o CMakeFiles/alethia_v3.dir/AlethiaV3.cpp.o CMakeFiles/alethia_v3.dir/Vulkan/createInstance.cpp.o CMakeFiles/alethia_v3.dir/initVulkan.cpp.o
+/usr/bin/ranlib libalethia_v3.a

@@ -1,0 +1,1 @@
+/usr/bin/c++  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/alethia.dir/src/main.cpp.o -o alethia  -Wl,-rpath,/opt/homebrew/lib src/libalethia_v3.a /opt/homebrew/lib/libvulkan.dylib /opt/homebrew/lib/libglfw.3.4.dylib -framework Metal -framework Foundation -framework QuartzCore -framework CoreGraphics -framework IOSurface

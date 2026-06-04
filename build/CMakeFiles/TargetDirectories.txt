@@ -1,0 +1,7 @@
+/Users/marcoojeda/Projects/plasma/build/CMakeFiles/alethia.dir
+/Users/marcoojeda/Projects/plasma/build/CMakeFiles/edit_cache.dir
+/Users/marcoojeda/Projects/plasma/build/CMakeFiles/rebuild_cache.dir
+/Users/marcoojeda/Projects/plasma/build/src/CMakeFiles/AlethiaV3Shaders.dir
+/Users/marcoojeda/Projects/plasma/build/src/CMakeFiles/alethia_v3.dir
+/Users/marcoojeda/Projects/plasma/build/src/CMakeFiles/edit_cache.dir
+/Users/marcoojeda/Projects/plasma/build/src/CMakeFiles/rebuild_cache.dir
