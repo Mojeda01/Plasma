@@ -3,6 +3,22 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <string>
+#include <optional>
+
+// forward struct for query helper.
+struct QueueFamilyIndices{
+    std::optional<uint32_t> graphicsFamily;
+    std::optional<uint32_t> presentFamily;
+    bool isComplete() const {
+        return graphicsFamily.has_value() && presentFamily.has_value();
+    }
+};
+
+struct SwapchainSupportDetails{
+    VkSurfaceCapabilitiesKHR capabilities;
+    std::vector<VkSurfaceFormatKHR> formats;
+    std::vector<VkPresentModeKHR> presentModes;
+};
 
 class AlethiaV3{
 public:
@@ -15,52 +31,71 @@ public:
 private:
     GLFWwindow* m_window = nullptr;
 
-    // Vulkan objects
-    VkInstance                  m_instance = VK_NULL_HANDLE;
-    VkPhysicalDevice            m_physicalDevice = VK_NULL_HANDLE;
-    VkDevice                    m_device = VK_NULL_HANDLE;
-    VkQueue                     m_graphicsQueue = VK_NULL_HANDLE;
-    VkQueue                     m_presentQueue = VK_NULL_HANDLE;
-    VkSurfaceKHR                m_surface = VK_NULL_HANDLE;
+    // CORE
+    VkInstance M_INSTANCE = VK_NULL_HANDLE;
+    VkPhysicalDevice M_PHYSICALDEVICE = VK_NULL_HANDLE;
+    VkDevice M_DEVICE = VK_NULL_HANDLE;
+    VkQueue M_GRAPHICSQUEUE = VK_NULL_HANDLE;
+    VkQueue M_PRESENTQUEUE = VK_NULL_HANDLE;
+    VkSurfaceKHR M_SURFACE = VK_NULL_HANDLE;
 
-    VkSwapchainKHR              m_swapchain = VK_NULL_HANDLE;
-    std::vector<VkImage>        m_swapchainImages;
-    std::vector<VkImageView>    m_swapchainImageViews;
-    VkFormat                    m_swapchainImageFormat{};
-    VkExtent2D                  m_swapchainExtent{};
+    // SWAPCHAIN
+    VkSwapchainKHR M_SWAPCHAIN = VK_NULL_HANDLE;
+    std::vector<VkImage> M_SWAPCHAINIMAGES;
+    std::vector<VkImageView> M_SWAPCHAINIMAGEVIEWS;
+    VkFormat M_SWAPCHAINIMAGEFORMAT{};
+    VkExtent2D M_SWAPCHAINEXTENT{};
 
-    VkRenderPass                m_renderPass = VK_NULL_HANDLE;
-    std::vector<VkFramebuffer>  m_framebuffers;
+    // PIPELINE
+    VkRenderPass M_RENDERPASS = VK_NULL_HANDLE;
+    VkPipelineLayout M_PIPELINELAYOUT = VK_NULL_HANDLE;
+    VkPipeline M_GRAPHICSPIPELINE = VK_NULL_HANDLE;
 
-    VkCommandPool               m_commandPool = VK_NULL_HANDLE;
-    std::vector<VkCommandBuffer> m_commandBuffers;
+    // COMMANDS
+    std::vector<VkFramebuffer> M_FRAMEBUFFERS;
+    VkCommandPool M_COMMANDPOOL = VK_NULL_HANDLE;
+    std::vector<VkCommandBuffer> M_COMMANDBUFFERS;
+    
+    // SYNC
+    std::vector<VkSemaphore> M_IMAGEAVAILABLESEMAPHORES;
+    std::vector<VkSemaphore> M_RENDERFINISHEDSEMAPHORES;
+    std::vector<VkFence> M_CURRENTFRAME = 0;
 
-    // sync
-    std::vector<VkSemaphore>    m_imageAvailableSemaphores;
-    std::vector<VkSemaphore>    m_renderFinishedSemaphores;
-    std::vector<VkFence>        m_inFlightFences;
-    uint32_t                    m_currentFrame = 0;
-
-    bool                        m_initialized = false;
- 
+    bool M_INITIALIZED = false;
+    
+    // SETUP
     void createInstance();
-    void setupDebugMessenger(); // VK_EXT_debug_utils callback setup.
+    void setupDebugMessenger();
     void createSurface();
     void pickPhysicalDevice();
-    void querySwapchainSupport(); // helper
-    void findQueueFamilies();
     void createLogicalDevice();
+
+    // SWAPCHAIN
     void createSwapchain();
     void createImageViews();
+    void recreateSwapchain();
+    void cleanupSwapchain();
+
+    // PIPELINE
     void createRenderPass();
+    void createPipelineLayout();
+    void createGraphicsPipeline(); 
+
+    // COMMANDS AND SYNC
     void createFramebuffers();
     void createCommandPool();
     void createCommandBuffers();
     void createSyncObjects();
+    void recordCommandBuffers(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 
-    void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
-    void recreateSwapchain();
+    // QUERY HELPERS
+    QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+    SwapchainSupportDetails querySwapchainSupport(VkPhysicalDevice device);
 
-    void cleanupSwapchain();
+    // SHADER
+    VkShaderModule createShaderModule(const std::vector<char>& code);
+    static std::vector<char> readFile(const std::string& filename);
+
     void cleanup();
+
 };
