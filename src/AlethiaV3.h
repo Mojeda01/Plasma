@@ -20,6 +20,7 @@ private:
     VkPhysicalDevice            m_physicalDevice = VK_NULL_HANDLE;
     VkDevice                    m_device = VK_NULL_HANDLE;
     VkQueue                     m_graphicsQueue = VK_NULL_HANDLE;
+    VkQueue                     m_presentQueue = VK_NULL_HANDLE;
     VkSurfaceKHR                m_surface = VK_NULL_HANDLE;
 
     VkSwapchainKHR              m_swapchain = VK_NULL_HANDLE;
@@ -43,8 +44,11 @@ private:
     bool                        m_initialized = false;
  
     void createInstance();
+    void setupDebugMessenger(); // VK_EXT_debug_utils callback setup.
     void createSurface();
     void pickPhysicalDevice();
+    void querySwapchainSupport(); // helper
+    void findQueueFamilies();
     void createLogicalDevice();
     void createSwapchain();
     void createImageViews();
