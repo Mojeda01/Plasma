@@ -10,4 +10,7 @@ void AlethiaV3::initVulkan()
 
     std::cout << "→ createInstance()\n";
     createInstance();
+
+    std::cout << "→ setupDebugMessenger() \n";
+    setupDebugMessenger();
 }

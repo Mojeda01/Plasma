@@ -39,6 +39,11 @@ void AlethiaV3::createInstance()
     createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     createInfo.pApplicationInfo = &appInfo;
 
+    // debug messenger for instance creation/destruction coverage.
+    VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo;
+    populateDebugMessengerCreateInfo(debugCreateInfo);
+    createInfo.pNext = &debugCreateInfo;
+
     if (!validationLayers.empty()) {
         createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
         createInfo.ppEnabledLayerNames = validationLayers.data();
@@ -56,7 +61,7 @@ void AlethiaV3::createInstance()
 #endif
 
     // create the instance 
-    if (vkCreateInstance(&createInfo, nullptr, &m_instance) != VK_SUCCESS) {
+    if (vkCreateInstance(&createInfo, nullptr, &M_INSTANCE) != VK_SUCCESS) {
         throw std::runtime_error("Failed to create Vulkan instance!");
     }
 

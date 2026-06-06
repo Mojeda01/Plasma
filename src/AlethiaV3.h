@@ -20,6 +20,15 @@ struct SwapchainSupportDetails{
     std::vector<VkPresentModeKHR> presentModes;
 };
 
+// validation layer code.
+const std::vector<const char*> VALIDATION_LAYERS = 
+{
+    "VK_LAYER_KHRONOS_validation"
+};
+
+// populate the debug messenger.
+void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
+
 class AlethiaV3{
 public:
     explicit AlethiaV3(GLFWwindow* window);
@@ -27,12 +36,13 @@ public:
 
     void drawFrame();
     void initVulkan();
-    bool isInitialized() const { return m_initialized; }
+    bool isInitialized() const { return M_INITIALIZED; }
 private:
     GLFWwindow* m_window = nullptr;
 
     // CORE
     VkInstance M_INSTANCE = VK_NULL_HANDLE;
+    VkDebugUtilsMessengerEXT M_DEBUGMESSENGER = VK_NULL_HANDLE; 
     VkPhysicalDevice M_PHYSICALDEVICE = VK_NULL_HANDLE;
     VkDevice M_DEVICE = VK_NULL_HANDLE;
     VkQueue M_GRAPHICSQUEUE = VK_NULL_HANDLE;
@@ -59,7 +69,7 @@ private:
     // SYNC
     std::vector<VkSemaphore> M_IMAGEAVAILABLESEMAPHORES;
     std::vector<VkSemaphore> M_RENDERFINISHEDSEMAPHORES;
-    std::vector<VkFence> M_CURRENTFRAME = 0;
+    uint32_t M_CURRENTFRAME = 0;
 
     bool M_INITIALIZED = false;
     

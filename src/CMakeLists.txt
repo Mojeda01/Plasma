@@ -20,6 +20,7 @@ add_library(alethia_v3 STATIC
     initv3.cpp
     AlethiaV3.cpp
     Vulkan/createInstance.cpp
+    Vulkan/debugMessenger.cpp
     initVulkan.cpp
 )
 
