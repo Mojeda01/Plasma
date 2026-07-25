@@ -1,11 +1,14 @@
 #include "AlethiaV3.h"
 #include <iostream>
+#include <stdexcept>
 
 // Constructor
 AlethiaV3::AlethiaV3(GLFWwindow* window) 
     : m_window(window)
 {
     std::cout << "[AlethiaV3] Constructor called\n";
+    
+    cleanup();
 }
 
 // Destructor
@@ -19,4 +22,40 @@ AlethiaV3::~AlethiaV3()
 void AlethiaV3::drawFrame()
 {
 
+
+}
+
+void AlethiaV3::cleanup()
+{
+    std::cout << "  [cleanup] Starting ... \n";
+
+    if (M_DEVICE != VK_NULL_HANDLE)
+    {
+        vkDestroyDevice(M_DEVICE, nullptr);
+        std::cout << "  [cleanup] Logical device destroyed.\n";
+    }
+
+    if (M_SURFACE != VK_NULL_HANDLE)
+    {
+        vkDestroySurfaceKHR(M_INSTANCE, M_SURFACE, nullptr);
+        std::cout << "  [cleanup] Surface destroyed.\n";
+    }
+
+    if (M_DEBUGMESSENGER != VK_NULL_HANDLE)
+    {
+        auto func = (PFN_vkDestroyDebugUtilsMessengerEXT) vkGetInstanceProcAddr(M_INSTANCE, "vkDestroyDebugUtilsMessengerEXT");
+        if (func != nullptr)
+        {
+            func(M_INSTANCE, M_DEBUGMESSENGER, nullptr);
+            std::cout << "  [cleanup] Debug messenger destroyed.\n";
+        }
+    }
+
+    if (M_INSTANCE != VK_NULL_HANDLE)
+    {
+        vkDestroyInstance(M_INSTANCE, nullptr);
+        std::cout << "  [cleanup] Instance destroyed.\n";
+    }
+
+    std::cout << " [cleanup] Complete.\n";
 }

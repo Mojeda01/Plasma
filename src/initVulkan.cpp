@@ -13,4 +13,13 @@ void AlethiaV3::initVulkan()
 
     std::cout << "→ setupDebugMessenger() \n";
     setupDebugMessenger();
+
+    std::cout << "→ createSurface()\n";
+    createSurface();
+
+    std::cout << "→ pickPhysicalDevice()\n";
+    pickPhysicalDevice();
+
+    std::cout << "→ createLogicalDevice()\n";
+    createLogicalDevice();
 }

@@ -26,6 +26,24 @@ const std::vector<const char*> VALIDATION_LAYERS =
     "VK_LAYER_KHRONOS_validation"
 };
 
+// Device extensions
+const std::vector<const char*> DEVICE_EXTENSIONS = 
+{
+    VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+    VK_KHR_DYNAMIC_RENDERING_EXTENSION_NAME,
+    VK_KHR_SYNCHRONIZATION_2_EXTENSION_NAME,
+    VK_KHR_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME,
+    VK_KHR_MULTIVIEW_EXTENSION_NAME,
+    VK_KHR_PUSH_DESCRIPTOR_EXTENSION_NAME,
+    VK_EXT_MEMORY_BUDGET_EXTENSION_NAME,
+#ifdef __APPLE__
+    "VK_KHR_portability_subset",
+#endif
+    "VK_KHR_maintenance4",
+    "VK_KHR_maintenance5",
+    "VK_KHR_maintenance6" 
+};
+
 // populate the debug messenger.
 void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 

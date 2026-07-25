@@ -21,6 +21,9 @@ add_library(alethia_v3 STATIC
     AlethiaV3.cpp
     Vulkan/createInstance.cpp
     Vulkan/debugMessenger.cpp
+    Vulkan/createSurface.cpp
+    Vulkan/pickPhysicalDevice.cpp
+    Vulkan/createLogicalDevice.cpp
     initVulkan.cpp
 )
 

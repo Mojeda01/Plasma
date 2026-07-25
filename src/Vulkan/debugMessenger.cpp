@@ -14,7 +14,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
                     << pCallbackData->messageIdNumber   << " : "
                     << pCallbackData->pMessageIdName    << " : "
                     << pCallbackData->pMessage << "\n";
-    } else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT)
+    } else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT)
     {
         std::cerr   << "    [Validation Error] "
                     << pCallbackData->messageIdNumber   << " : "

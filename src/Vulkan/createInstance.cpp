@@ -6,11 +6,7 @@
 
 void AlethiaV3::createInstance() 
 {
-    std::cout << " [createInstance] Starting... \n";
-    
-    const std::vector<const char*> validationLayers = {
-        "VK_LAYER_KHRONOS_validation"
-    };
+    std::cout << " [createInstance] Starting... \n"; 
  
     std::cout << "   [createInstance] Validation layers ENABLED\n"; 
 
@@ -44,9 +40,9 @@ void AlethiaV3::createInstance()
     populateDebugMessengerCreateInfo(debugCreateInfo);
     createInfo.pNext = &debugCreateInfo;
 
-    if (!validationLayers.empty()) {
-        createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
-        createInfo.ppEnabledLayerNames = validationLayers.data();
+    if (!VALIDATION_LAYERS.empty()) {
+        createInfo.enabledLayerCount = static_cast<uint32_t>(VALIDATION_LAYERS.size());
+        createInfo.ppEnabledLayerNames = VALIDATION_LAYERS.data();
     } else {
         createInfo.enabledLayerCount = 0;
         createInfo.ppEnabledLayerNames = nullptr;
