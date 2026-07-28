@@ -22,4 +22,7 @@ void AlethiaV3::initVulkan()
 
     std::cout << "→ createLogicalDevice()\n";
     createLogicalDevice();
+
+    std::cout << "→ createSwapchain()\n";
+    createSwapchain();
 }

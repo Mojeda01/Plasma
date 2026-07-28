@@ -15,7 +15,6 @@ set(V3_SPV_FILES "")
 
 add_custom_target(AlethiaV3Shaders DEPENDS ${V3_SPV_FILES})
 
-# --- Library ---
 add_library(alethia_v3 STATIC
     initv3.cpp
     AlethiaV3.cpp
@@ -24,6 +23,7 @@ add_library(alethia_v3 STATIC
     Vulkan/createSurface.cpp
     Vulkan/pickPhysicalDevice.cpp
     Vulkan/createLogicalDevice.cpp
+    Vulkan/createSwapchain.cpp
     initVulkan.cpp
 )
 

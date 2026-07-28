@@ -6,16 +6,14 @@
 AlethiaV3::AlethiaV3(GLFWwindow* window) 
     : m_window(window)
 {
-    std::cout << "[AlethiaV3] Constructor called\n";
-    
-    cleanup();
+    std::cout << "[AlethiaV3] Constructor called\n"; 
 }
 
 // Destructor
 AlethiaV3::~AlethiaV3()
 {
     std::cout << "[AlethiaV3] Destructor called\n";
-
+    cleanup();
 }
 
 
@@ -29,6 +27,12 @@ void AlethiaV3::cleanup()
 {
     std::cout << "  [cleanup] Starting ... \n";
 
+    if (M_SWAPCHAIN != VK_NULL_HANDLE)
+    {
+        vkDestroySwapchainKHR(M_DEVICE, M_SWAPCHAIN, nullptr);
+        std::cout << "  [cleanup] Swapchain destroyed. \n";
+    }
+    
     if (M_DEVICE != VK_NULL_HANDLE)
     {
         vkDestroyDevice(M_DEVICE, nullptr);
