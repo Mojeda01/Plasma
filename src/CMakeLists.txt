@@ -24,6 +24,7 @@ add_library(alethia_v3 STATIC
     Vulkan/pickPhysicalDevice.cpp
     Vulkan/createLogicalDevice.cpp
     Vulkan/createSwapchain.cpp
+    Vulkan/createImageViews.cpp
     initVulkan.cpp
 )
 

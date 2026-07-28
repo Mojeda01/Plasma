@@ -25,4 +25,7 @@ void AlethiaV3::initVulkan()
 
     std::cout << "→ createSwapchain()\n";
     createSwapchain();
+
+    std::cout << "→ createImageViews()\n";
+    createImageViews();
 }

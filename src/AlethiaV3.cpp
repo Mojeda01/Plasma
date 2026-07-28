@@ -27,6 +27,15 @@ void AlethiaV3::cleanup()
 {
     std::cout << "  [cleanup] Starting ... \n";
 
+    for (auto ImageView : M_SWAPCHAINIMAGEVIEWS)
+    {
+        vkDestroyImageView(M_DEVICE, ImageView, nullptr);
+    }
+    if (!M_SWAPCHAINIMAGEVIEWS.empty())
+    {
+        std::cout << "  [cleanup] " << M_SWAPCHAINIMAGEVIEWS.size() << " image views destroyed. \n";
+    }
+
     if (M_SWAPCHAIN != VK_NULL_HANDLE)
     {
         vkDestroySwapchainKHR(M_DEVICE, M_SWAPCHAIN, nullptr);
