@@ -36,6 +36,23 @@ void AlethiaV3::cleanup()
         std::cout << "  [cleanup] " << M_SWAPCHAINIMAGEVIEWS.size() << " image views destroyed. \n";
     }
 
+    for (size_t i = 0; i < M_INFLIGHTFENCES.size(); i++)
+    {
+        vkDestroySemaphore(M_DEVICE, M_RENDERFINISHEDSEMAPHORES[i], nullptr);
+        vkDestroySemaphore(M_DEVICE, M_IMAGEAVAILABLESEMAPHORES[i], nullptr);
+        vkDestroyFence(M_DEVICE, M_INFLIGHTFENCES[i], nullptr);
+    }
+    if (!M_INFLIGHTFENCES.empty())
+    {
+        std::cout << "  [cleanup] Sync Objects destroyed. \n";
+    }
+
+    if (M_COMMANDPOOL != VK_NULL_HANDLE)
+    {
+        vkDestroyCommandPool(M_DEVICE, M_COMMANDPOOL, nullptr);
+        std::cout << "  [cleanup] Command pool destroyed. \n";
+    }
+
     if (M_SWAPCHAIN != VK_NULL_HANDLE)
     {
         vkDestroySwapchainKHR(M_DEVICE, M_SWAPCHAIN, nullptr);

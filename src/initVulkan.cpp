@@ -28,4 +28,13 @@ void AlethiaV3::initVulkan()
 
     std::cout << "→ createImageViews()\n";
     createImageViews();
+
+    std::cout << "→ createCommandPool()\n";
+    createCommandPool();
+
+    std::cout << "→ createCommandBuffers()\n";
+    createCommandBuffers();
+
+    std::cout << "→ createSyncObjects()\n";
+    createSyncObjects();
 }

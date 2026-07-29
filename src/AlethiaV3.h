@@ -20,6 +20,9 @@ struct SwapchainSupportDetails{
     std::vector<VkPresentModeKHR> presentModes;
 };
 
+// Number of frame the CPU is allowed to record ahead of the GPU.
+constexpr uint32_t MAX_FRAMES_IN_FLIGHT = 2;
+
 // validation layer code.
 const std::vector<const char*> VALIDATION_LAYERS = 
 {
@@ -87,20 +90,20 @@ private:
     // SYNC
     std::vector<VkSemaphore> M_IMAGEAVAILABLESEMAPHORES;
     std::vector<VkSemaphore> M_RENDERFINISHEDSEMAPHORES;
+    std::vector<VkFence> M_INFLIGHTFENCES;
     uint32_t M_CURRENTFRAME = 0;
-
     bool M_INITIALIZED = false;
     
     // SETUP
-    void createInstance();
-    void setupDebugMessenger();
-    void createSurface();
-    void pickPhysicalDevice();
-    void createLogicalDevice();
+    void createInstance();          // done
+    void setupDebugMessenger();     // done 
+    void createSurface();           // done
+    void pickPhysicalDevice();      // done
+    void createLogicalDevice();     // done
 
     // SWAPCHAIN
-    void createSwapchain();
-    void createImageViews();
+    void createSwapchain();     // done
+    void createImageViews();    // done 
     void recreateSwapchain();
     void cleanupSwapchain();
 
@@ -111,7 +114,7 @@ private:
 
     // COMMANDS AND SYNC
     void createFramebuffers();
-    void createCommandPool();
+    void createCommandPool();   // done
     void createCommandBuffers();
     void createSyncObjects();
     void recordCommandBuffers(VkCommandBuffer commandBuffer, uint32_t imageIndex);
