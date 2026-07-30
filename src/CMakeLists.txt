@@ -44,6 +44,7 @@ add_library(alethia_v3 STATIC
     Vulkan/createSyncObjects.cpp
     Vulkan/createPipelineLayout.cpp
     Vulkan/createGraphicsPipeline.cpp
+    Vulkan/recordCommandBuffers.cpp
     initVulkan.cpp
 )
 

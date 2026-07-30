@@ -19,13 +19,79 @@ AlethiaV3::~AlethiaV3()
 
 void AlethiaV3::drawFrame()
 {
+    // wait for the GPU to finish with this frame-in-flight slot's resources
+    // before reusing its command buffer.
+    vkWaitForFences(M_DEVICE, 1, &M_INFLIGHTFENCES[M_CURRENTFRAME], VK_TRUE, UINT64_MAX);
 
+    uint32_t imageIndex;
+    VkResult result = vkAcquireNextImageKHR(
+        M_DEVICE, M_SWAPCHAIN, UINT64_MAX,
+        M_IMAGEAVAILABLESEMAPHORES[M_CURRENTFRAME], VK_NULL_HANDLE, &imageIndex
+    );
 
+    if(result == VK_ERROR_OUT_OF_DATE_KHR)
+    {
+        // Swapchain recreation not implemented yet; nothing to do this frame.
+        return;
+    } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
+    {
+        throw std::runtime_error("Failed to acquire swapchain image!");
+    }
+
+    // Only reset the fence once we know we are actually submitting work,
+    // so an early return above doesn't leave the fence permanently unsignaled.
+    vkResetFences(M_DEVICE, 1, &M_INFLIGHTFENCES[M_CURRENTFRAME]);
+
+    vkResetCommandBuffer(M_COMMANDBUFFERS[M_CURRENTFRAME], 0);
+    recordCommandBuffers(M_COMMANDBUFFERS[M_CURRENTFRAME], imageIndex);
+
+    VkSemaphore waitSemaphores[] = { M_IMAGEAVAILABLESEMAPHORES[M_CURRENTFRAME] };
+    VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+    VkSemaphore signalSemaphores[] = { M_RENDERFINISHEDSEMAPHORES[imageIndex] }; 
+
+    VkSubmitInfo submitInfo{};
+    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submitInfo.waitSemaphoreCount = 1;
+    submitInfo.pWaitSemaphores = waitSemaphores;
+    submitInfo.pWaitDstStageMask = waitStages;
+    submitInfo.commandBufferCount = 1;
+    submitInfo.pCommandBuffers = &M_COMMANDBUFFERS[M_CURRENTFRAME];
+    submitInfo.signalSemaphoreCount = 1;
+    submitInfo.pSignalSemaphores = signalSemaphores;
+
+    if (vkQueueSubmit(M_GRAPHICSQUEUE, 1, &submitInfo, M_INFLIGHTFENCES[M_CURRENTFRAME]) != VK_SUCCESS)
+    {
+        throw std::runtime_error("Failed to submit draw command buffer!");
+    }
+
+    VkSwapchainKHR swapchains[] = { M_SWAPCHAIN };
+
+    VkPresentInfoKHR presentInfo{};
+    presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+    presentInfo.waitSemaphoreCount = 1;
+    presentInfo.pWaitSemaphores = signalSemaphores;
+    presentInfo.swapchainCount = 1;
+    presentInfo.pSwapchains = swapchains;
+    presentInfo.pImageIndices = &imageIndex;
+
+    result = vkQueuePresentKHR(M_PRESENTQUEUE, &presentInfo);
+
+    if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR && result != VK_ERROR_OUT_OF_DATE_KHR)
+    {
+        throw std::runtime_error("Failed to present swapchain image!");
+    }
+
+    M_CURRENTFRAME = (M_CURRENTFRAME + 1) % MAX_FRAMES_IN_FLIGHT;
 }
 
 void AlethiaV3::cleanup()
 {
     std::cout << "  [cleanup] Starting ... \n";
+
+    if (M_DEVICE != VK_NULL_HANDLE)
+    {
+        vkDeviceWaitIdle(M_DEVICE);
+    }
 
     for (auto ImageView : M_SWAPCHAINIMAGEVIEWS)
     {
@@ -37,10 +103,13 @@ void AlethiaV3::cleanup()
     }
 
     for (size_t i = 0; i < M_INFLIGHTFENCES.size(); i++)
-    {
-        vkDestroySemaphore(M_DEVICE, M_RENDERFINISHEDSEMAPHORES[i], nullptr);
+    { 
         vkDestroySemaphore(M_DEVICE, M_IMAGEAVAILABLESEMAPHORES[i], nullptr);
         vkDestroyFence(M_DEVICE, M_INFLIGHTFENCES[i], nullptr);
+    }
+    for (size_t i = 0; i < M_RENDERFINISHEDSEMAPHORES.size(); i++)
+    {
+        vkDestroySemaphore(M_DEVICE, M_RENDERFINISHEDSEMAPHORES[i], nullptr);
     }
     if (!M_INFLIGHTFENCES.empty())
     {

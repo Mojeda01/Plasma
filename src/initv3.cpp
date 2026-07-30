@@ -65,6 +65,7 @@ void initv3() {
 
         while (!window.shouldClose()) {
             window.pollEvents();
+            renderer.drawFrame();
         }
     }
     catch (const std::exception& e) {
