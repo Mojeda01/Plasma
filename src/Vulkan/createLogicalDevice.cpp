@@ -30,13 +30,19 @@ void AlethiaV3::createLogicalDevice()
 
     // feature chain
     
+    VkPhysicalDeviceShaderDrawParameterFeatures shaderDrawParametersFeatures{};
+    shaderDrawParametersFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_DRAW_PARAMETERS_FEATURES;
+    shaderDrawParametersFeatures.shaderDrawParameters = VK_TRUE;
+
     VkPhysicalDeviceMultiviewFeatures multiviewFeatures{};
     multiviewFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MULTIVIEW_FEATURES;
     multiviewFeatures.multiview = VK_TRUE;
+    multiviewFeatures.pNext = &shaderDrawParametersFeatures;
 
     VkPhysicalDeviceBufferDeviceAddressFeatures bufferDeviceAddressFeatures{};
     bufferDeviceAddressFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_FEATURES; 
     bufferDeviceAddressFeatures.bufferDeviceAddress = VK_TRUE;
+    bufferDeviceAddressFeatures.pNext = &multiviewFeatures;
     
     VkPhysicalDeviceSynchronization2Features synchronization2Features{};
     synchronization2Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SYNCHRONIZATION_2_FEATURES;

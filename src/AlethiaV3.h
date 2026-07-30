@@ -107,16 +107,14 @@ private:
     void recreateSwapchain();
     void cleanupSwapchain();
 
-    // PIPELINE
-    void createRenderPass();
+    // PIPELINE 
     void createPipelineLayout();
     void createGraphicsPipeline(); 
 
-    // COMMANDS AND SYNC
-    void createFramebuffers();
+    // COMMANDS AND SYNC 
     void createCommandPool();   // done
-    void createCommandBuffers();
-    void createSyncObjects();
+    void createCommandBuffers(); // done
+    void createSyncObjects(); // done 
     void recordCommandBuffers(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 
     // QUERY HELPERS

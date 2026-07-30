@@ -47,6 +47,18 @@ void AlethiaV3::cleanup()
         std::cout << "  [cleanup] Sync Objects destroyed. \n";
     }
 
+    if (M_GRAPHICSPIPELINE != VK_NULL_HANDLE)
+    {
+        vkDestroyPipeline(M_DEVICE, M_GRAPHICSPIPELINE, nullptr);
+        std::cout << "  [cleanup] Graphics pipeline destroyed.\n";
+    }
+
+    if (M_PIPELINELAYOUT != VK_NULL_HANDLE)
+    {
+        vkDestroyPipelineLayout(M_DEVICE, M_PIPELINELAYOUT, nullptr);
+        std::cout << "  [cleanup] Pipeline layout destroyed. \n";
+    }
+
     if (M_COMMANDPOOL != VK_NULL_HANDLE)
     {
         vkDestroyCommandPool(M_DEVICE, M_COMMANDPOOL, nullptr);

@@ -37,4 +37,10 @@ void AlethiaV3::initVulkan()
 
     std::cout << "→ createSyncObjects()\n";
     createSyncObjects();
+
+    std::cout << "→ createPipelineLayout()\n";
+    createPipelineLayout();
+
+    std::cout << "→ createGraphicsPipeline()\n";
+    createGraphicsPipeline();
 }
